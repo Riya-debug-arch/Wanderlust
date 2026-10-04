@@ -1,0 +1,121 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="container-fluid">
+
+
+
+
+
+
+
+    <!-- ================= CATEGORY BAR ================= -->
+
+    <div class="category-bar">
+
+        <div class="category-item">
+            <div class="category-icon">🔥</div>
+            <div class="category-name">Trending</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">🛏️</div>
+            <div class="category-name">Rooms</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">🏙️</div>
+            <div class="category-name">Iconic Cities</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">⛰️</div>
+            <div class="category-name">Mountains</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">🏰</div>
+            <div class="category-name">Castles</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">🏊</div>
+            <div class="category-name">Amazing Pools</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">⛺</div>
+            <div class="category-name">Camping</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">🐄</div>
+            <div class="category-name">Farms</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">❄️</div>
+            <div class="category-name">Arctic</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">🏠</div>
+            <div class="category-name">Domes</div>
+        </div>
+
+        <div class="category-item">
+            <div class="category-icon">⛵</div>
+            <div class="category-name">Boats</div>
+        </div>
+
+    </div>
+
+
+    <!-- ================= LISTINGS ================= -->
+
+    <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-1 g-4">
+
+        <% for (let listing of allListings) { %>
+
+            <div class="col">
+
+                <a
+                    href="/listings/<%= listing._id %>"
+                    class="listing-link"
+                >
+
+                    <div class="card listing-card">
+
+                        <img
+                            src="<%= listing.image.url %>"
+                            class="card-img-top"
+                            alt="listing_image"
+                        >
+
+                        <div class="card-body">
+
+                            <p class="card-text">
+
+                                <b>
+                                    <%= listing.title %>
+                                </b>
+
+                                <br>
+
+                                &#8377;<%= listing.price.toLocaleString("en-IN") %>
+                                /night
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        <% } %>
+
+    </div>
+
+</div>

@@ -1,0 +1,235 @@
+<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top">
+ 
+    <div class="container-fluid">
+
+        <!-- LOGO -->
+        <a class="navbar-brand" href="/listings">
+            <i class="fa-regular fa-compass"></i>
+        </a>
+        <!-- LEFT -->
+            <div class="navbar-nav">
+
+                <a class="nav-link" href="/listings">
+                    Explore
+                </a>
+
+            </div>
+
+
+        <!-- SEARCH BAR -->
+        <form
+            class="search-form"
+            action="/listings/search"
+            method="GET"
+            autocomplete="off"
+        >
+
+            <div class="search-wrapper">
+
+                <input
+                    type="text"
+                    name="q"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Search destination"
+                    required
+                >
+
+                <div
+                    id="searchSuggestions"
+                    class="search-suggestions"
+                ></div>
+
+            </div>
+
+            <button type="submit" class="search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span class="search-text">Search</span>
+            </button>
+
+        </form>
+
+
+        <!-- TOGGLER -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <!-- NAV LINKS -->
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNavAltMarkup"
+        >
+
+           
+
+            <!-- RIGHT -->
+            <div class="navbar-nav ms-auto">
+
+                <a
+                    class="nav-link"
+                    href="/listings/new"
+                >
+                    Add new Listing
+                </a>
+
+
+                <% if(!currUser){ %>
+
+                    <a
+                        class="nav-link"
+                        href="/signup"
+                    >
+                        <b>SignUp</b>
+                    </a>
+
+                    <a
+                        class="nav-link"
+                        href="/login"
+                    >
+                        <b>LogIn</b>
+                    </a>
+
+                <% } else { %>
+
+                    <a
+                        class="nav-link"
+                        href="/logout"
+                    >
+                        <b>LogOut</b>
+                    </a>
+
+                <% } %>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<script>
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const suggestionsBox =
+        document.getElementById("searchSuggestions");
+
+
+    searchInput.addEventListener("input", async () => {
+
+        const query =
+            searchInput.value.trim();
+
+
+        if (!query) {
+
+            suggestionsBox.style.display = "none";
+            suggestionsBox.innerHTML = "";
+
+            return;
+        }
+
+
+        try {
+
+            const response = await fetch(
+                `/listings/suggestions?q=${encodeURIComponent(query)}`
+            );
+
+
+            const suggestions =
+                await response.json();
+
+
+            suggestionsBox.innerHTML = "";
+
+
+            if (suggestions.length === 0) {
+
+                suggestionsBox.style.display = "none";
+
+                return;
+            }
+
+
+            suggestions.forEach((suggestion) => {
+
+                const div =
+                    document.createElement("div");
+
+
+                div.classList.add(
+                    "search-suggestion"
+                );
+
+
+                div.innerHTML = `
+                    <i class="fa-solid fa-location-dot"></i>
+                    ${suggestion}
+                `;
+
+
+                div.addEventListener(
+                    "click",
+                    () => {
+
+                        searchInput.value =
+                            suggestion;
+
+                        suggestionsBox.style.display =
+                            "none";
+
+                    }
+                );
+
+
+                suggestionsBox.appendChild(div);
+
+            });
+
+
+            suggestionsBox.style.display =
+                "block";
+
+
+        } catch (error) {
+
+            console.log(
+                "Suggestion error:",
+                error
+            );
+
+        }
+
+    });
+
+
+    document.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                !event.target.closest(
+                    ".search-wrapper"
+                )
+            ) {
+
+                suggestionsBox.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+</script>
